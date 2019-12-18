@@ -1,0 +1,90 @@
+---
+title: "icager vignette"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{hello}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+library(dplyr)
+library(kableExtra)
+```
+
+```{r setup}
+library(icager)
+```
+
+# Dataset
+
+A dataset of choices made by sample agents performing probabilistic reversal learning task. Includes actions /visits/ performed by 3 random agents, first 10 per each of 11 experimental stages.
+
+
+```{r print data}
+data(dx)
+#For info call ?dx
+```
+
+# Import data
+
+`import()` imports all experimentals files stored in given directories, parses on the basis on prespecified format and returns a list.
+
+```{r import data, eval=FALSE}
+mydata <- 
+  import(
+    list.files(
+      path = choose.dir(),
+      full.names = T), 
+    version = 1) %>% 
+  dplyr::bind_rows()
+```
+
+# Experimental scheme
+
+An experimental scheme corresponds to probabilistic reversal learning task, in which assignment between proposed options and probabilities of access to reward are steadily reversed. An option is called a `corner`, probability of reward - reward probability (`rp`).
+Each such assignment is a state of all the `corner`s' `rp` at a current moment and refered to as `contingency`. To add the contingency state, also termed as experimental phase call `contingencise()` on a dataset. Then see the data-based experimental scheme with `printscheme()`. 
+
+Various contingencies may belong to different categories of experimental scheme, e.x. module of adaptation consists of contingencies labelled as "0x0.9" or/and "0x0", whereas the reversals stage of "0x0.3x0.9" or/and "0.3x0.9". To assign the module info use `schematize()`.
+
+Please note that all needed defaults are set internally (values on `schematize(help=TRUE)`). For additional info call `?schematize`.
+
+## Assign contingency
+
+```{r assign continency}
+dx <- contingencise(dx)
+```
+
+```{r}
+unique(dx$contingency)
+```
+
+## Assign module
+
+```{r assign module}
+dx <- schematize(dx)
+```
+
+```{r}
+with(dx, {table(info, contingency)})
+```
+
+## Print scheme
+
+```{r eval=F}
+printscheme(dx)
+```
+
+```{r exp scheme, echo = F}
+printscheme(dx) %>% knitr::kable(format = "html") %>%
+   kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
+```
+
+```{r hidden plot}
+plotscheme(dx)
+```
