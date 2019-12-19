@@ -40,3 +40,11 @@ Defaults are set internally (call \code{schematize(help=TRUE)}),
 but if the \code{info} data frame is provided the current
 values get assigned to the dataset.
 }
+\examples{
+dx <- contingencise(dx) \%>\% schematize()
+
+dx <- contingencise(dx) \%>\% schematize(
+info = data.frame(cont = 1:10,
+mod = c("preadapt", rep("test",10))))
+
+}

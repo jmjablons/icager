@@ -36,5 +36,7 @@ Here the total set of data-driven contingencies are stored
 in a single data frame.
 }
 \examples{
+
 printscheme(dx)
+
 }

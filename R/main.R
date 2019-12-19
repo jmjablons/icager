@@ -11,11 +11,16 @@
 #'
 #' @param version Character or integer. Version of software:
 #' \describe{
-#' \item{"old", alteratively: "plus", "older, "proper", 2}
-#' \item{"new", alteratively: "star", "newer", 1}
+#' \item{#1}{"new", "star", "newer", 1}
+#' \item{#2}{"old", "plus", "older, "proper", 2}
 #' }
+#'
+#' @return
+#' a named list
+#'
 #' @examples
 #' digform(1)
+#'
 #' @export
 digform <- function(version){
   if(version %in% c("star", "new", "newer", "shitty", 1)){
@@ -80,7 +85,7 @@ digform <- function(version){
           "Purple" = .9,
           "Green" = .3,
           "Blue" = 1)
-    out}
+    return(out)}
 
 #' Preprocess Experiment's Files
 #'
@@ -95,12 +100,13 @@ digform <- function(version){
 #'
 #' @param mydirs Character vector. Paths to files
 #' @param version Character or integer. Version of software:
-#' \describe{
-#' \item{"old", alteratively: "plus", "older, "proper", 2}
-#' \item{"new", alteratively: "star", "newer", 1}
-#' }
+#' #1  {"new", alteratively: "star", "newer", 1}
+#' #2  {"old", alteratively: "plus", "older, "proper", 2}
+#'
 #' For details call \code{?digform(version)}
+#'
 #' @return list [data frame]
+#'
 #' @examples
 #' mydata <- import(
 #'   list.files(
@@ -130,12 +136,15 @@ import <- function(
         warning(paste("file not found:", pathfile))}
       if(file.exists(pathfile)){
         tvisit = importfile(form$key, paste0(x, form$visit)) %>%
-          plyr::rename(form$namevisit)
+          plyr::rename(form$namevisit) %>%
+          dplyr::mutate(id = as.character(id))
         tnosepoke = parsenosepoke(form$key, paste0(x, form$nosepoke))
         tdoor = importdoor(form$key, paste0(x, form$output))
+        main = tvisit
+        if(file.exists(paste0(x, form$light))){
         tlight = importfile(form$key, paste0(x, form$light)) %>%
           plyr::rename(form$nameenvironment)
-        main = combineenvironment(tvisit, tlight)
+        main = combineenvironment(main, tlight)}
         main = merge(x = main, y = tnosepoke,
                      all.x = TRUE, message = F)
         main = dplyr::mutate(main,
@@ -145,10 +154,5 @@ import <- function(
         names(main) <- tolower(names(main))
         out[[i]] <- main}}
     close(pb)
-    out},
+    return(emptyout(out))},
     finally = message('done'))}
-
-devtools::uses_testthat()
-usethis::use_testthat()
-usethis::use_test()
-testthat::auto_test_package()

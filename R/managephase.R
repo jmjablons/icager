@@ -19,7 +19,9 @@
 #' \item{contingency}{integer. number of experimental stage (=contingency)}
 #' }
 #' @examples
+#'
 #' dx <- contingencise(dx)
+#'
 #' @export
 contingencise <-
   function(A, metadata = digform(1)$meta){
@@ -72,7 +74,9 @@ contingencise <-
 #' \item{label}{label of the contingency}
 #' }
 #' @examples
+#'
 #' printscheme(dx)
+#'
 #' @export
 printscheme <-
   function(A, sorted = T, sep = 'x'){
@@ -110,7 +114,7 @@ printscheme <-
 #' @param A data frame. a dataset or experimental scheme (see: \code{printscheme()})
 #'
 #' @examples
-#' dx <- contingencise(dx) %>% schematize()
+#' dx <- schematize(contingencise(dx))
 #'
 #' @export
 plotscheme <-
@@ -164,7 +168,7 @@ plotscheme <-
 #'
 #' dx <- contingencise(dx) %>% schematize(
 #' info = data.frame(cont = 1:10,
-#' mod = c("preadapt, rep("test",10))))
+#' mod = c("preadapt", rep("test",10))))
 #'
 #' @export
 schematize <- function(A, info = NA, help = F){

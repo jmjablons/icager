@@ -2,12 +2,12 @@
 # not for export purpouses
 
 # Defaults for NULL values
-`%||%` <- function(a, b) if (is.null(a)) b else a
+# `%||%` <- function(a, b) if (is.null(a)) b else a
 
 # Remove NULLs from a list
-compact <- function(x) {
-  x[!vapply(x, is.null, logical(1))]
-}
+# compact <- function(x) {
+#   x[!vapply(x, is.null, logical(1))]
+# }
 
 #' @importFrom magrittr %>%
 
@@ -30,3 +30,8 @@ rawrename <- function(A, pattern = "cornercondition", replacement = "condition")
   names(A) = tolower(names(A))
   names(A)[grep(x = names(A), pattern = pattern)] <- replacement
   A}
+
+#omit empty elements of a list
+emptyout <- function(list){
+  lapply(list, function(a) ifelse(nrow(a)>0, return(a), return(NULL)))
+}

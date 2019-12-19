@@ -10,10 +10,9 @@ import(mydirs, version)
 \item{mydirs}{Character vector. Paths to files}
 
 \item{version}{Character or integer. Version of software:
-\describe{
-\item{"old", alteratively: "plus", "older, "proper", 2}
-\item{"new", alteratively: "star", "newer", 1}
-}
+#1  {"new", alteratively: "star", "newer", 1}
+#2  {"old", alteratively: "plus", "older, "proper", 2}
+
 For details call \code{?digform(version)}}
 }
 \value{

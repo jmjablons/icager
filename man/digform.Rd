@@ -9,9 +9,12 @@ digform(version)
 \arguments{
 \item{version}{Character or integer. Version of software:
 \describe{
-\item{"old", alteratively: "plus", "older, "proper", 2}
-\item{"new", alteratively: "star", "newer", 1}
+\item{#1}{"new", "star", "newer", 1}
+\item{#2}{"old", "plus", "older, "proper", 2}
 }}
+}
+\value{
+a named list
 }
 \description{
 \code{digform()} returns a list of variables specifying
@@ -23,4 +26,5 @@ It's called also inside other package's functions.
 }
 \examples{
 digform(1)
+
 }

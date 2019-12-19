@@ -14,6 +14,6 @@ plotscheme(A, ...)
 experimental scheme
 }
 \examples{
-dx <- contingencise(dx) \%>\% schematize()
+dx <- schematize(contingencise(dx))
 
 }

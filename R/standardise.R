@@ -1,17 +1,32 @@
-# standard:
-#   deviceid <chr>
-#   start <dttm>
-#   end <dttm>
-#   corner <chr>
-#   condition <chr>
-#   tag <chr>
-#   temperature <dbl>
-#   illluminaton <int>
-#   nlick <dbl>
-#   durationlick <dbl>
-#   nnosepoke <int>
-#   dooropened <chr>
-
+#' Standardise a Dataset
+#'
+#' \code{standardise()} selects a dataset variables and
+#' changes their type to provide a minimal size comprehensible
+#' dataset
+#'
+#' @param A data frame
+#'
+#' @return
+#' data frame with variables:
+#' \describe{
+#' \item{deviceid:chr}{}
+#' \item{start:dttm}{}
+#' \item{end:dttm}{}
+#' \item{corner:chr}{}
+#' \item{condition:chr}{}
+#' \item{tag:chr}{}
+#' \item{temperature:dbl}{}
+#' \item{illluminaton:int}{}
+#' \item{nlick:dbl}{}
+#' \item{durationlick:dbl}{}
+#' \item{nnosepoke:int}{}
+#' \item{dooropened:chr}{}
+#' }
+#'
+#' @examples
+#' mydata <- standardise(dx)
+#'
+#' @export
 standardise <- function(A){
 A = rawrename(A)
   A %>%

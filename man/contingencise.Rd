@@ -30,5 +30,7 @@ data frame with added columns:
 on the basis on reward probabilities.
 }
 \examples{
+
 dx <- contingencise(dx)
+
 }
