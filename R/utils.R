@@ -33,5 +33,5 @@ rawrename <- function(A, pattern = "cornercondition", replacement = "condition")
 
 #omit empty elements of a list
 emptyout <- function(list){
-  lapply(list, function(a) ifelse(nrow(a)>0, return(a), return(NULL)))
+  list[lapply(list,length)>0]
 }
