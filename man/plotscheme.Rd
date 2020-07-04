@@ -8,12 +8,14 @@ plotscheme(A, ...)
 }
 \arguments{
 \item{A}{data frame. a dataset or experimental scheme (see: \code{printscheme()})}
+
+\item{...}{arguments passed to image()}
 }
 \description{
-\code{schematize()} shows colorful abstract representation of
+\code{plotscheme()} shows colorful abstract representation of
 experimental scheme
 }
 \examples{
-dx <- schematize(contingencise(dx))
+dx <- plotscheme(contingencise(dx))
 
 }

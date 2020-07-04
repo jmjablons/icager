@@ -3,16 +3,13 @@
 #' \code{importfile} imports a single file based on
 #' standards and returns a data table
 #'
-#' @param version Numeric. Indicates type of
-#' software used; for more info call \code{digformat(data)}
+#' @param .form List inherited from \code{digformat(version)}
 #' @param target Character. Path to file; Default
 #' calls widget to choose a file WIN by \code{file.choose()}
 #' @return Data frame
-#' @examples
-#' mydata <- importfile(1)
 importfile <- function(
-  version, target = file.choose()){
-  decimalmark <- digform(version)$decimalmark
+  .form, target = file.choose()){
+  decimalmark <- .form$decimalmark
     readr::read_delim(
       file = target,
       "\t",
@@ -32,8 +29,7 @@ importfile <- function(
 #' rather than by name. Please note: A door opening is equal
 #' to access to a reward.
 #'
-#' @param version Numeric. Indicates type of
-#' software used; for more info call \code{digformat(data)}
+#' @param .form List inherited from \code{digformat(version)}
 #' @param target Character. Path to file; Default
 #' calls widget to choose a file WIN by \code{file.choose()}
 #' @return Data frame with 3 variables:
@@ -42,17 +38,15 @@ importfile <- function(
 #'   \item{deviceid}{name of the house cage; <chr>}
 #'   \item{Corner}{where the door got opened; <int>}
 #' }
-#' @examples
-#' mydoorinfo <- importdoor(1)
 importdoor <- function(
-  version, target = file.choose()){
+  .form, target = file.choose()){
   tryCatch({
     if(file.exists(target)){
       tdoor = unlist(readLines(target))
       tdoor = unlist(strsplit(tdoor, split = "\\\t"))
       point = which(tdoor == "SetDoor")
-      index = digform(version)$doorIndex(ind = point, a = tdoor)
-      deviceid = digform(version)$doorCage(ind = index, a = tdoor)
+      index = .form$doorIndex(ind = point, a = tdoor)
+      deviceid = .form$doorCage(ind = index, a = tdoor)
       return(data.frame(
         TimeDoorOpened = as.POSIXct(tdoor[index - 2]),
         deviceid = deviceid,

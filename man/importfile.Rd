@@ -4,11 +4,10 @@
 \alias{importfile}
 \title{Import Any Tabelar File}
 \usage{
-importfile(version, target = file.choose())
+importfile(.form, target = file.choose())
 }
 \arguments{
-\item{version}{Numeric. Indicates type of
-software used; for more info call \code{digformat(data)}}
+\item{.form}{List inherited from \code{digformat(version)}}
 
 \item{target}{Character. Path to file; Default
 calls widget to choose a file WIN by \code{file.choose()}}
@@ -19,7 +18,4 @@ Data frame
 \description{
 \code{importfile} imports a single file based on
 standards and returns a data table
-}
-\examples{
-mydata <- importfile(1)
 }

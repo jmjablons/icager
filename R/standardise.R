@@ -28,6 +28,18 @@
 #'
 #' @export
 standardise <- function(A){
+  deviceid<-
+  start<-
+  end<-
+  corner<-
+  condition<-
+  tag<-
+  temperature<-
+  illumination<-
+  nlick<-
+  durationlick<-
+  nnosepoke<-
+  dooropened <- NULL
 A = rawrename(A)
   A %>%
     dplyr::select(
@@ -49,7 +61,11 @@ A = rawrename(A)
         !grepl(x = deviceid, "Cage "),
         paste0("Cage ",deviceid),
         deviceid),
+      nlick = as.numeric(nlick),
+      nnosepoke = as.numeric(nnosepoke),
       corner = as.character(corner),
       condition = as.character(condition),
       tag = as.character(tag),
-      dooropened = as.character(dooropened))}
+      illumination = as.numeric(illumination),
+      temperature = as.numeric(temperature),
+      dooropened = as.integer(dooropened))}

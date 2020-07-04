@@ -4,16 +4,17 @@
 \alias{import}
 \title{Preprocess Experiment's Files}
 \usage{
-import(mydirs, version)
+import(.dir = utils::choose.dir(), version = NULL, .list.form = NULL)
 }
 \arguments{
-\item{mydirs}{Character vector. Paths to files}
+\item{.dir}{Character vector. Paths to one single directory with files}
 
 \item{version}{Character or integer. Version of software:
 #1  {"new", alteratively: "star", "newer", 1}
-#2  {"old", alteratively: "plus", "older, "proper", 2}
+#2  {"old", alteratively: "plus", "older, "proper", 2}}
 
-For details call \code{?digform(version)}}
+\item{.list.form}{Optional list modifying defaults of \code{digform()}.
+For details call \code{?digform(2)}}
 }
 \value{
 list [data frame]
@@ -28,16 +29,4 @@ Warning: The output object (list of data frames)
 can be large in size. It depends entirely on number
 of files provided. Loading one experiment dataset
 per time is recomended.
-}
-\examples{
-mydata <- import(
-  list.files(
-   path = "F://phd_data/DATA/", #or: choose.dir() WIN
-   all.files = T,
-   recursive = F,
-   full.names = T) \%>\%
- .[grep(., pattern = "/2019-", fixed = T)],
- version = 2) \%>\%
-dplyr::bind_rows() #or: rbind()
-
 }

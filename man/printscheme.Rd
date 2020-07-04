@@ -37,6 +37,6 @@ in a single data frame.
 }
 \examples{
 
-printscheme(dx)
+printscheme(contingencise(dx))
 
 }

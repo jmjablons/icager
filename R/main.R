@@ -1,6 +1,3 @@
-# main --------------------------------------------------------------------
-#require(dplyr); require(readr); require(lubridate); require(tidyr)
-
 #' Provide Formatting Standards On Call
 #'
 #' \code{digform()} returns a list of variables specifying
@@ -98,31 +95,27 @@ digform <- function(version){
 #' of files provided. Loading one experiment dataset
 #' per time is recomended.
 #'
-#' @param mydirs Character vector. Paths to files
+#' @param .dir Character vector. Paths to one single directory with files
 #' @param version Character or integer. Version of software:
 #' #1  {"new", alteratively: "star", "newer", 1}
 #' #2  {"old", alteratively: "plus", "older, "proper", 2}
-#'
-#' For details call \code{?digform(version)}
+#' @param .list.form Optional list modifying defaults of \code{digform()}.
+#' For details call \code{?digform(2)}
 #'
 #' @return list [data frame]
 #'
-#' @examples
-#' mydata <- import(
-#'   list.files(
-#'    path = "F://phd_data/DATA/", #or: choose.dir() WIN
-#'    all.files = T,
-#'    recursive = F,
-#'    full.names = T) %>%
-#'  .[grep(., pattern = "/2019-", fixed = T)],
-#'  version = 2) %>%
-#' dplyr::bind_rows() #or: rbind()
+#' @importFrom utils setTxtProgressBar txtProgressBar
+#' @importFrom utils modifyList
 #'
 #' @export
 import <- function(
-  mydirs, version) {
+  .dir = utils::choose.dir(), version = NULL, .list.form = NULL) {
   tryCatch({
-    form <- digform(version)
+    id <- start <- end <- NULL
+    if(!is.null(version)){form <- digform(version)}
+    if(!is.null(.list.form)){utils::modifyList(form, .list.form)}
+    mydirs <- list.files(path = .dir,
+      recursive = F, full.names = T)
     nfiles = length(mydirs)
     stopifnot(nfiles > 1)
     out <- list(rep(NA, nfiles))
@@ -131,18 +124,20 @@ import <- function(
     for(i in seq_along(mydirs)){
       setTxtProgressBar(pb, i)
       x = mydirs[i]
+      if(is.null(version)){form <- digform(checksoft(x))} ##dummy users
+      if(!is.null(.list.form)){modifyList(form, .list.form)} ##ever dummier
       pathfile = paste0(x, form$visit)
       if(!file.exists(pathfile)){
         warning(paste("file not found:", pathfile))}
       if(file.exists(pathfile)){
-        tvisit = importfile(form$key, paste0(x, form$visit)) %>%
+        tvisit = importfile(form, paste0(x, form$visit)) %>%
           plyr::rename(form$namevisit) %>%
           dplyr::mutate(id = as.character(id))
-        tnosepoke = parsenosepoke(form$key, paste0(x, form$nosepoke))
-        tdoor = importdoor(form$key, paste0(x, form$output))
+        tnosepoke = parsenosepoke(tform = form, paste0(x, form$nosepoke))
+        tdoor = importdoor(form, paste0(x, form$output))
         main = tvisit
         if(file.exists(paste0(x, form$light))){
-        tlight = importfile(form$key, paste0(x, form$light)) %>%
+        tlight = importfile(form, paste0(x, form$light)) %>%
           plyr::rename(form$nameenvironment)
         main = combineenvironment(main, tlight)}
         main = merge(x = main, y = tnosepoke,
@@ -152,7 +147,31 @@ import <- function(
                       end = as.POSIXct(end))
         main = combinedoor(main, tdoor)
         names(main) <- tolower(names(main))
-        out[[i]] <- main}}
+        out[[i]] <- main
+        out = emptyout(out)}}
     close(pb)
-    return(emptyout(out))},
+    return(out)},
     finally = message('done'))}
+
+#' Preprocess Experiment's Files ++
+#'
+#' \code{simple} serves the purpose of making the
+#' data preprocessing as automatic as possible.
+#' The function is a wrapper simplifing
+#' basics of the data import.
+#'
+#' Warning: The input must be able to get
+#' passed to dplyr::bind_rows meaning ex
+#' names of each tibble in list must match.
+#'
+#' @param a result of \code{import()} or simply eval of it
+#' @param ... arguments to the \code{contingenise()}
+#'
+#' @return tibble
+#'
+#' @export
+simple <- function(a = import(), ...){
+  dplyr::bind_rows(a) %>%
+    dplyr::distinct() %>%
+    standardise() %>%
+    contingencise(...)}

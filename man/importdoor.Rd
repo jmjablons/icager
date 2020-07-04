@@ -4,11 +4,10 @@
 \alias{importdoor}
 \title{Get The Door Openings Info}
 \usage{
-importdoor(version, target = file.choose())
+importdoor(.form, target = file.choose())
 }
 \arguments{
-\item{version}{Numeric. Indicates type of
-software used; for more info call \code{digformat(data)}}
+\item{.form}{List inherited from \code{digformat(version)}}
 
 \item{target}{Character. Path to file; Default
 calls widget to choose a file WIN by \code{file.choose()}}
@@ -31,7 +30,4 @@ Files containing all hardware info usually are clumsy,
 so here the needed variables are get by position
 rather than by name. Please note: A door opening is equal
 to access to a reward.
-}
-\examples{
-mydoorinfo <- importdoor(1)
 }

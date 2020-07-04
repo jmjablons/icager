@@ -1,5 +1,4 @@
-.onAttach <- function(libname, pkgname) {
-  packageStartupMessage(paste("done"))}
+.onAttach <- function(libname, pkgname) {}
 
 .onLoad <- function(libname, pkgname) {
   op <- options()

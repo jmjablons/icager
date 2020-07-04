@@ -1,19 +1,25 @@
-combineenvironment <- function(main = tvisit, environment = tlight){
+combineenvironment <- function(main, environment){
+  DateTime <- deviceid <- TimeMinute <- start <- NULL
   environment = environment %>%
     dplyr::mutate(
       TimeMinute = as.character(
           trunc(as.POSIXct(DateTime),
-            units="mins")))
+            units="mins"))) %>%
+    dplyr::arrange(DateTime) %>% ##hmm
+    dplyr::select(-DateTime) %>%
+    dplyr::group_by(deviceid, TimeMinute) %>%
+    dplyr::slice(1) %>% ##fixed
+    dplyr::ungroup()
   main = main %>%
     dplyr::mutate(
       TimeMinute = as.character(
           trunc(as.POSIXct(start),
             units="mins")))
-  merge(main, dplyr::select(environment, -DateTime),
-        all.x = TRUE) %>%
+  merge(main, environment, all.x = TRUE) %>%
     dplyr::select(-TimeMinute)}
 
-combinedoor <- function(main = tvisit, minor = tdoor){
+combinedoor <- function(main, minor){
+  TimeDoorOpened <- start <- id <- end <- Corner <- deviceid <- NULL
   minor = minor %>%
     dplyr::mutate(TimeDoorOpened = as.POSIXct(TimeDoorOpened)) %>%
     dplyr::as_tibble() %>%
