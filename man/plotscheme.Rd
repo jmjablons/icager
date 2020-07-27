@@ -15,7 +15,3 @@ plotscheme(A, ...)
 \code{plotscheme()} shows colorful abstract representation of
 experimental scheme
 }
-\examples{
-dx <- plotscheme(contingencise(dx))
-
-}

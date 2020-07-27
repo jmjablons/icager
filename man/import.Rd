@@ -4,12 +4,13 @@
 \alias{import}
 \title{Preprocess Experiment's Files}
 \usage{
-import(.dir = utils::choose.dir(), version = NULL, .list.form = NULL)
+import(.dir = utils::choose.dir(), .version = NULL,
+  .list.form = NULL)
 }
 \arguments{
 \item{.dir}{Character vector. Paths to one single directory with files}
 
-\item{version}{Character or integer. Version of software:
+\item{.version}{Character or integer. Version of software:
 #1  {"new", alteratively: "star", "newer", 1}
 #2  {"old", alteratively: "plus", "older, "proper", 2}}
 
@@ -17,7 +18,7 @@ import(.dir = utils::choose.dir(), version = NULL, .list.form = NULL)
 For details call \code{?digform(2)}}
 }
 \value{
-list [data frame]
+list of data frames
 }
 \description{
 \code{import} imports all experimentals files

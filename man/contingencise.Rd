@@ -4,21 +4,20 @@
 \alias{contingencise}
 \title{Assign Contingency of Experimental Scheme}
 \usage{
-contingencise(A, metadata = digform(1)$meta)
+contingencise(a, metadata = digcondition())
 }
 \arguments{
-\item{A}{data frame}
+\item{a}{data frame}
 
-\item{metadata}{named vector. Numeric vector of reward probability
-assigned to corner-condition
+\item{metadata}{named vector
 \describe{
 \item{values}{numeric values of reward probabilities}
 \item{names()}{character vector of labels present in data}
 }
-Default: call \code{digform(version)$meta}}
+Default: call \code{digcondition}}
 }
 \value{
-data frame with added columns:
+dataset with added columns:
 \describe{
 \item{rp}{numeric. reward probability}
 \item{contingency}{integer. number of experimental stage (=contingency)}

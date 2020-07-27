@@ -1,6 +1,5 @@
 ---
 title: "icager vignette"
-date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{hello}
@@ -11,85 +10,84 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = ""
 )
+library(dplyr)
+library(icager)
 #library(kableExtra)
 ```
 
 ```{r setup}
-library(dplyr)
-library(icager)
 ```
 
-# Dataset
+## Sample dataset
 
-A dataset of choices made by sample agents performing probabilistic reversal learning task. Includes actions /visits/ performed by 3 random agents, first 10 per each of 11 experimental stages.
+The presented dataset consists of choices made by sample agents performing probabilistic reversal learning task. It includes actions /visits/ performed by 3 random agents, first 10 per each of 11 experimental contingencies.
 
 
 ```{r print data}
 data(dx)
-#For info call ?dx
 ```
 
-# Import data
+## Import data
 
-`import()` imports all experimentals files stored in given directories, parses on the basis on prespecified format and returns a list.
+`import()` imports all experimentals files stored in a given directory, parses on the basis on a default format and returns a list. Different settings can be provided as a list to the `.list.form` argument. If the software version is known providing the `.version` makes the import faster.
 
 ```{r import data, eval=FALSE}
-mydata <- 
-  import(
-    list.files(
-      path = choose.dir(),
-      full.names = T), 
-    version = 1)
-mydata = dplyr::bind_rows(mydata)
+mydata <- icager::import(.version = 1) %>%
+          dplyr::bind_rows()
 ```
 
-# Inform formatting
+If uncertain call `?digform`.
 
-These two functions help decode the data if initial software settings
-are long gone. Use `hint()` or `specify()`.
+### Shortcut
 
-The `hint()` provides help to decode markings.
+`simple()` function call all the bare neccessities with defaults to provide easily ready to use complete dataset (import, bind, check for duplicated rows, standardise and assign contingency).
+
+```{r eval=FALSE}
+mydata <- simple()
+```
+
+
+## Inform formatting
+
+This function help decode the data if initial software settings
+are long gone. The `hint()` provides help to decode markings.
 
 ```{r}
 hint(dx)
 ```
 
-The `specify()` gives basic description to identify dataset.
+## Identify dataset
+
+The `specify()` gives basic description of provided dataset.
 
 ```{r}
 specify(dx)
 ```
 
-For help call `?hint` or `?specify`
+## Experimental scheme
 
-# Standardise form
+The applied here experimental scheme corresponds to probabilistic reversal learning task*, in which assignment between proposed options and probabilities of access to reward are steadily reversed. An option is called a `corner` and assigned to it probability of reward - reward probability (`rp`). The value denotes chances of 
+inner doors, barring access to a bottle, to get opened. Each such assignment is a state of all the `corner`s' `rp` at a current moment and is refered to as `contingency`. To add the contingency states, also termed as experimental phases call `contingencise(data)` on a dataset. To easily visualise it call `printscheme(data)`. 
 
-For combining a couple of datasets or simply in case of changing software on the way it is useful to standardise the received datasets. The `standardise()` function select variables and changes their type by prespecified form.
+*It bases on the assumption that a change in value of a current corner's `condition` denotes start of a new contingency. Thus it would suit any procedure with scheme changes based on corner's `condition` values.
 
-```{r}
-mydata <- standardise(dx)
-```
-
-# Experimental scheme
-
-An experimental scheme corresponds to probabilistic reversal learning task, in which assignment between proposed options and probabilities of access to reward are steadily reversed. An option is called a `corner`, probability of reward - reward probability (`rp`).
-Each such assignment is a state of all the `corner`s' `rp` at a current moment and refered to as `contingency`. To add the contingency state, also termed as experimental phase call `contingencise()` on a dataset. Then see the data-based experimental scheme with `printscheme()`. 
-
-Various contingencies may belong to different categories of experimental scheme, e.x. module of adaptation consists of contingencies labelled as "0x0.9" or/and "0x0", whereas the reversals stage of "0x0.3x0.9" or/and "0.3x0.9". 
-
-## Assign contingency
+### Assign contingency
 
 ```{r assign continency}
 dx <- contingencise(dx)
 ```
 
+The optionally provided `metadata` argument ought to contain assignment of reward probability <num> to 
+markings present in data <chr>. If uncertain call `?digcondition`, `digcondition()` and/or `hint(data)$hint`. 
+
 ```{r}
 unique(dx$contingency)
 ```
 
-## Print scheme
+Plase note that the division to contingencies is based solely on the actual choices so the user-set
+start and finish of them are unknown. They also do not neccessarilly overlap subsequent ones.
 
 ```{r eval=F}
 printscheme(dx)
@@ -100,6 +98,12 @@ printscheme(dx) %>% knitr::kable(format = "html") %>%
    kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
 ```
 
-```{r hidden plot}
-plotscheme(dx)
+Various contingencies may belong to different categories of experimental scheme, e.x. module of adaptation consists of contingencies labelled as "0x0.9" or/and "0x0", whereas the reversals stage of "0x0.3x0.9" or/and "0.3x0.9". As each experiment varies in scheme a such assignment could not be done automatically and the `specify()` function is deprecated.
+
+### Visualise scheme
+
+The plot presents an abstract representation of experimental scheme. Numbers in boxes denote contingency duration in hours; on the x axis contingency, on y corner number.
+
+```{r shown plot, comment=F, warning=F, fig.dim=c(4,1.2)}
+plotit(dx)
 ```

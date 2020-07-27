@@ -7,24 +7,21 @@
 simple(a = import(), ...)
 }
 \arguments{
-\item{a}{result of \code{import()} or simply eval of it}
+\item{a}{dataset or call of \code{import(path-to-the-data-directory)}}
 
-\item{...}{arguments to the \code{contingenise()}}
+\item{...}{arguments to the \code{contingenise()}.
+Each corner condition is coupled with user-specified reward access
+probability, yet the the probabilities are not
+directly named in data. Coding for them must be provided.
+In case of problems please import the dataset with
+ \code{import()} and then call \code{hint(data)} or \code{digcondition(data)}.}
 }
 \value{
 tibble
 }
 \description{
-\code{simple} serves the purpose of making
-welcome dummy users who do not know how
-to bind a list of df into one data frame.
-Presumably they also don't have a clue how to
-make the furhter steps of data preprocessing
-so the function is a wrapper simplifing
-basics of the data import.
-}
-\details{
-Warning: The input must be able to get
-passed to dplyr::bind_rows meaning ex
-names of each tibble in list must match.
+\code{simple} is a wrapper simplifing
+basics of the data import. Get through loading
+a dataset, standardise and assign
+experimental contingencies.
 }

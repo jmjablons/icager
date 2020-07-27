@@ -4,7 +4,7 @@
 \alias{digform}
 \title{Provide Formatting Standards On Call}
 \usage{
-digform(version)
+digform(version = NULL)
 }
 \arguments{
 \item{version}{Character or integer. Version of software:
@@ -25,6 +25,6 @@ which varies dependenting on software version
 It's called also inside other package's functions.
 }
 \examples{
-digform(1)
+digform(version = 1)
 
 }

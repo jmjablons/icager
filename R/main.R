@@ -16,10 +16,11 @@
 #' a named list
 #'
 #' @examples
-#' digform(1)
+#' digform(version = 1)
 #'
 #' @export
-digform <- function(version){
+digform <- function(version = NULL){
+  stopifnot(!is.null(version), !is.na(version), is.numeric(version))
   if(version %in% c("star", "new", "newer", "shitty", 1)){
     out <- list(
       key = 1,
@@ -73,15 +74,6 @@ digform <- function(version){
               (a[ind + 3] == 0)]},
       doorCage = function(ind, a){
         as.character(a[ind - 1])})}
-    out$meta = c(
-          "0" = 0,
-          "1" = .9,
-          "-1" = .3,
-          "White" = 0,
-          "Red" = .9,
-          "Purple" = .9,
-          "Green" = .3,
-          "Blue" = 1)
     return(out)}
 
 #' Preprocess Experiment's Files
@@ -96,24 +88,28 @@ digform <- function(version){
 #' per time is recomended.
 #'
 #' @param .dir Character vector. Paths to one single directory with files
-#' @param version Character or integer. Version of software:
+#' @param .version Character or integer. Version of software:
 #' #1  {"new", alteratively: "star", "newer", 1}
 #' #2  {"old", alteratively: "plus", "older, "proper", 2}
 #' @param .list.form Optional list modifying defaults of \code{digform()}.
 #' For details call \code{?digform(2)}
 #'
-#' @return list [data frame]
+#' @return list of data frames
 #'
 #' @importFrom utils setTxtProgressBar txtProgressBar
 #' @importFrom utils modifyList
+#' @importFrom dplyr mutate
+#' @importFrom plyr rename
+#' @importFrom dplyr %>%
 #'
 #' @export
 import <- function(
-  .dir = utils::choose.dir(), version = NULL, .list.form = NULL) {
+  .dir = utils::choose.dir(), .version = NULL, .list.form = NULL) {
   tryCatch({
     id <- start <- end <- NULL
-    if(!is.null(version)){form <- digform(version)}
-    if(!is.null(.list.form)){utils::modifyList(form, .list.form)}
+    if(!is.null(.version)){form <- digform(.version)}
+    if(!is.null(.version) & !is.null(.list.form)){
+      form <- utils::modifyList(form, .list.form)}
     mydirs <- list.files(path = .dir,
       recursive = F, full.names = T)
     nfiles = length(mydirs)
@@ -124,8 +120,10 @@ import <- function(
     for(i in seq_along(mydirs)){
       setTxtProgressBar(pb, i)
       x = mydirs[i]
-      if(is.null(version)){form <- digform(checksoft(x))} ##dummy users
-      if(!is.null(.list.form)){modifyList(form, .list.form)} ##ever dummier
+      if(is.null(.version)){
+        form <- digform(checksoft(x))} ##dummy users
+      if(!is.null(.list.form)){
+        form <- utils::modifyList(form, .list.form)} ##ever dummier
       pathfile = paste0(x, form$visit)
       if(!file.exists(pathfile)){
         warning(paste("file not found:", pathfile))}
@@ -150,22 +148,22 @@ import <- function(
         out[[i]] <- main
         out = emptyout(out)}}
     close(pb)
-    return(out)},
-    finally = message('done'))}
+    return(out)})}
 
 #' Preprocess Experiment's Files ++
 #'
-#' \code{simple} serves the purpose of making the
-#' data preprocessing as automatic as possible.
-#' The function is a wrapper simplifing
-#' basics of the data import.
+#' \code{simple} is a wrapper simplifing
+#' basics of the data import. Get through loading
+#' a dataset, standardise and assign
+#' experimental contingencies.
 #'
-#' Warning: The input must be able to get
-#' passed to dplyr::bind_rows meaning ex
-#' names of each tibble in list must match.
-#'
-#' @param a result of \code{import()} or simply eval of it
-#' @param ... arguments to the \code{contingenise()}
+#' @param a dataset or call of \code{import(path-to-the-data-directory)}
+#' @param ... arguments to the \code{contingenise()}.
+#' Each corner condition is coupled with user-specified reward access
+#' probability, yet the the probabilities are not
+#' directly named in data. Coding for them must be provided.
+#' In case of problems please import the dataset with
+#'  \code{import()} and then call \code{hint(data)} or \code{digcondition(data)}.
 #'
 #' @return tibble
 #'
