@@ -18,7 +18,7 @@ a named list
 }
 \description{
 \code{digform()} returns a list of variables specifying
-experimental files formatting,
+experimental files formats,
 which varies dependenting on software version
 }
 \details{

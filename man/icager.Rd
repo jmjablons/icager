@@ -3,7 +3,6 @@
 \docType{package}
 \name{icager}
 \alias{icager}
-\alias{icager-package}
 \title{icager: Preprocess Inteligent System's Experimental Data Easily}
 \description{
 The package enables painless, quick, automatic import and
@@ -13,5 +12,5 @@ abilities on group-housed mice under various
 neuropsychological factors.
 }
 \details{
-For tutorial call \code{vignette(icager)}
+For tutorial call \code{utils::browseVignettes(icager)}
 }

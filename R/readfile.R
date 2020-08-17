@@ -21,7 +21,7 @@ importfile <- function(
 #' Get The Door Openings Info
 #'
 #' \code{importfile} reads a single file word by word on,
-#' selects proper informations on the basis of standards,
+#' selects words on the basis of standards,
 #' parses and returns a data table
 #'
 #' Files containing all hardware info usually are clumsy,

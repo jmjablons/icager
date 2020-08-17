@@ -4,8 +4,7 @@
 \alias{import}
 \title{Preprocess Experiment's Files}
 \usage{
-import(.dir = utils::choose.dir(), .version = NULL,
-  .list.form = NULL)
+import(.dir = utils::choose.dir(), .version = NULL, .list.form = NULL)
 }
 \arguments{
 \item{.dir}{Character vector. Paths to one single directory with files}
@@ -21,8 +20,8 @@ For details call \code{?digform(2)}}
 list of data frames
 }
 \description{
-\code{import} imports all experimentals files
-stored in given directories, parses on the basis on
+\code{import} imports all experimental files
+stored in a given directory, parses on the basis on
 prespecified standards and returns a list
 }
 \details{

@@ -13,7 +13,7 @@ parsenosepoke <- function(
           nlick = sum(as.numeric(nlick)),
           durationlick = sum(as.numeric(durationlick)),
           contacttimelick = sum(as.numeric(contacttimelick)),
-          nnosepoke = n()) %>%
+          nnosepoke = dplyr::n()) %>%
         dplyr::ungroup()
     } else { #fake it
       warning(paste0("file not found: ",target))

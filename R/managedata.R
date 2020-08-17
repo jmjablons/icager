@@ -1,15 +1,3 @@
-# prepare instance data
-# {temp <- unique(dxstar$tag)
-# dx <- dxstar %>%
-#   filter(tag %in% sample(temp, 3)) %>%
-#   contingencise() %>%
-#   filter(contingency %in% 0:10) %>%
-#   group_by(tag, contingency) %>%
-#   arrange(start, .by_group = T) %>%
-#   dplyr::slice(1:10, .preserve = TRUE) %>%
-#   ungroup() %>%
-#   select(-rp, -contingency)}
-
 #' Sample experimental data
 #'
 #' A dataset of randomly selected choices

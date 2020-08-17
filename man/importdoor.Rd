@@ -22,7 +22,7 @@ Data frame with 3 variables:
 }
 \description{
 \code{importfile} reads a single file word by word on,
-selects proper informations on the basis of standards,
+selects words on the basis of standards,
 parses and returns a data table
 }
 \details{

@@ -1,8 +1,8 @@
 ---
-title: "icager vignette"
+title: "icager"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{hello}
+  %\VignetteIndexEntry{icager}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

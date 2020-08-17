@@ -1,7 +1,7 @@
 #' Provide Formatting Standards On Call
 #'
 #' \code{digform()} returns a list of variables specifying
-#' experimental files formatting,
+#' experimental files formats,
 #' which varies dependenting on software version
 #'
 #' It's called also inside other package's functions.
@@ -78,8 +78,8 @@ digform <- function(version = NULL){
 
 #' Preprocess Experiment's Files
 #'
-#' \code{import} imports all experimentals files
-#' stored in given directories, parses on the basis on
+#' \code{import} imports all experimental files
+#' stored in a given directory, parses on the basis on
 #' prespecified standards and returns a list
 #'
 #' Warning: The output object (list of data frames)
@@ -118,12 +118,11 @@ import <- function(
     pb <- txtProgressBar(
       min = 0, max = nfiles, char = "*", style = 3)
     for(i in seq_along(mydirs)){
-      setTxtProgressBar(pb, i)
       x = mydirs[i]
       if(is.null(.version)){
-        form <- digform(checksoft(x))} ##dummy users
+        form <- digform(checksoft(x))}
       if(!is.null(.list.form)){
-        form <- utils::modifyList(form, .list.form)} ##ever dummier
+        form <- utils::modifyList(form, .list.form)}
       pathfile = paste0(x, form$visit)
       if(!file.exists(pathfile)){
         warning(paste("file not found:", pathfile))}
@@ -146,9 +145,9 @@ import <- function(
         main = combinedoor(main, tdoor)
         names(main) <- tolower(names(main))
         out[[i]] <- main
-        out = emptyout(out)}}
+        setTxtProgressBar(pb, i)}}
     close(pb)
-    return(out)})}
+    return(emptyout(out))})}
 
 #' Preprocess Experiment's Files ++
 #'

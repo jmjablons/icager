@@ -6,7 +6,7 @@
 #' abilities on group-housed mice under various
 #' neuropsychological factors.
 #'
-#' For tutorial call \code{vignette(icager)}
+#' For tutorial call \code{utils::browseVignettes(icager)}
 #'
 #' @docType package
 #' @name icager
